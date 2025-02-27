@@ -1,0 +1,79 @@
+1. For install of Bind9 in terminal enter: sudo apt install bind9  bind9utils  bind9-doc -y
+2. In terminal enter: sudo apt install net-tools (you will need this for check of you IP adress)
+3. In terminal enter: ifconfig or sudo ifconsif   and look for *inet* with starting number 192.168... that is your IP adress
+4. In terminal enter: sudo nano /etc/bind/named.conf.options and press enter then uncoment line:
+
+Comented line:  
+//forwarders {             
+//0.0.0.0;
+//};
+
+Uncomented line:
+forwarders {
+0.0.0.0;
+};
+
+Insted of 0.0.0.0; enter 8.8.8.8;
+
+5. Next in terminal enter: sudo nano /etc/bind/db.yourCustomDomain.com and press enter
+6. In that new opened file paste this code (You can use example.com or YourCustomDomain.com for your server):
+
+;
+; BIND data file for yourCustomDomain.com
+;
+$TTL  604800
+@     IN    SOA  ns1.yourCustomDomain.com.   admin.yourCustomDomain.com. (
+              3   ; Serial
+         604800   ; Refresh
+          86400   ; Retry
+        2419200   ; Expire
+         604800 ) ; Negative Cache TTL
+;
+@     IN    NS    ns1.yourCustomDomain.com.
+@     IN    A     Your IP adress
+
+7.  After that press on your keyboard ctrl+o and then ctrl+x or ctrl+x then y and again ctrl+x to save file and exit that file
+8. Then in terminal enter: sudo nano /etc/bind/db.192 and hit enter
+9. In that new opened file paste again this code (but this time insted of entering your IP enter your domain on that place):
+
+;
+; BIND  reverse data file for yourCustomDomain.com
+;
+$TTL  604800
+@     IN    SOA  ns1.yourCustomDomain.com.   admin.yourCustomDomain.com. (
+              3   ; Serial
+         604800   ; Refresh
+          86400   ; Retry
+        2419200   ; Expire
+         604800 ) ; Negative Cache TTL
+;
+@     IN    NS      ns1.yourCustomDomain.com.
+1     IN    PTR     yourCustomDomain.com
+
+10.  After that press on your keyboard ctrl+o and then ctrl+x or ctrl+x then y and again ctrl+x to save file and exit that file
+11.  Next in terminal enter: sudo nano /etc/bind/named.conf.local and hit enter then remove all content from that file and paste this line of code:
+
+zone "yourCustomDomain.com" {
+    type master;
+    file "/etc/bind/db.yourCustomDomain.com";
+};
+
+zone "1.168.192.in-addr.arpa" {
+     type master;
+     file "/etc/bind/db.192";
+};
+
+12. After that press on your keyboard ctrl+o and then ctrl+x or ctrl+x then y and again ctrl+x to save file and exit that file
+13. In terminal enter: sudo systemctl restart bind9 and press enter 
+14. If you want to check if it is working or not in terminal enter: sudo systemctl status bind9
+
+15. This is optional but it's useful to have (linux firewall) if you dont have one you can enter in terminal: sudo apt install ufw
+Or if you want to have graphical user interface you can enter:  sudo apt install gufw 
+Next to check if it is working in terminal enter:  sudo systemctl status ufw 
+If terminal print: Status: inactive in terminal enter:  sudo ufw enable   and check again status of ufw (firewall) and you will see: Status: active
+Last step is to allow bind9 to go throu your linux firewall you can do that entering in terminal: sudo ufw allow bind9
+Than reload firewall entering in terminal: sudo ufw reload  then the terminal will print: Firewall reloaded
+
+Now your DNS server is ready for use.
+Thank you for reading.
+
