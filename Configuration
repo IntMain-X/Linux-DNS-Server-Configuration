@@ -13,7 +13,7 @@ forwarders {
 0.0.0.0;
 };
 
-Insted of 0.0.0.0; enter 8.8.8.8 and also 8.8.4.4;
+Insted of 0.0.0.0; enter 8.8.8.8; and also 8.8.4.4;
 
 5. Next in terminal enter: sudo nano /etc/bind/db.yourCustomDomain.com and press enter
 6. In that new opened file paste this code (You can use example.com or YourCustomDomain.com for your server):
