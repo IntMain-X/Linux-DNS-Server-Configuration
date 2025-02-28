@@ -1,5 +1,5 @@
 1. For install of Bind9 in terminal enter: sudo apt install bind9  bind9utils  bind9-doc -y
-2. In terminal enter: sudo apt install net-tools (you will need this for check of you IP adress)
+2. Next in terminal enter: sudo apt install net-tools (you will need this for check of you IP adress)
 3. In terminal enter: ifconfig or sudo ifconsif   and look for *inet* with starting number 192.168... that is your IP adress
 4. In terminal enter: sudo nano /etc/bind/named.conf.options and press enter then uncoment line:
 
